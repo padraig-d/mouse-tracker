@@ -1,8 +1,24 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-int main()
-{
+class Rectangle {
+    public:
+        SDL_Rect startRect = {
+            .x = 40,
+            .y = 40,
+            .w = 50,
+            .h = 50,
+        };
+
+        SDL_Rect* getRect() {
+            
+            return &startRect;
+        }
+};
+
+
+int main() {
+    
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         std::cout << "Failed to initialize the SDL2 library\n";
@@ -24,10 +40,12 @@ int main()
         std::cout << "Failed to create window\n";
         return -1;
     }
-
-    
-    SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255); 
+    Rectangle rectangle;
+    SDL_Rect* rect = rectangle.getRect();
+        
     SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xFF);
+    SDL_RenderFillRect(renderer, rect);
     SDL_RenderPresent(renderer);
 
 
@@ -42,5 +60,8 @@ int main()
             } 
         }
     }
+
+
+
 
 }
