@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <iostream>
+#include "../include/Macros.hpp"
 
 class Rectangle {
     public:
@@ -28,7 +29,7 @@ int main() {
     SDL_Window *window = SDL_CreateWindow("SDL2 Window",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
-                                          680, 480,
+                                          WIDTH, HEIGHT,
                                           0);
 
     SDL_Renderer* renderer = NULL;
