@@ -1,0 +1,1 @@
+ g++ test.cpp ../include/functions.cpp ../include/class.cpp -lSDL2 && ./a.out

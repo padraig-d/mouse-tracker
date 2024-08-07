@@ -1,27 +1,12 @@
 #include <SDL2/SDL.h>
 #include <iostream>
-#include "../include/Macros.hpp"
-
-class Rectangle {
-    public:
-        SDL_Rect startRect = {
-            .x = 40,
-            .y = 40,
-            .w = 50,
-            .h = 50,
-        };
-
-        SDL_Rect* getRect() {
-            
-            return &startRect;
-        }
-};
-
+#include <random>
+#include <vector>
+#include "../include/macros.hpp"
 
 int main() {
     
-    if(SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
+    if(SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cout << "Failed to initialize the SDL2 library\n";
         return -1;
     }
@@ -36,33 +21,40 @@ int main() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 
-    if(!window)
-    {
+    if(!window) {
         std::cout << "Failed to create window\n";
         return -1;
     }
-    Rectangle rectangle;
-    SDL_Rect* rect = rectangle.getRect();
-        
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xFF);
-    SDL_RenderFillRect(renderer, rect);
-    SDL_RenderPresent(renderer);
+
+    std::vector<Rectangle> rectangles;
+
+    rectangles.push_back(Rectangle());
+    SDL_Rect* rect = rectangles[0].getRect();
+
 
 
     while (true) {
+        SDL_Delay(17);   // 60-ish FPS framecap
+
         SDL_Event event;
-        
-        while(SDL_PollEvent(&event)) { 
-            switch (event.type) {
-                case SDL_QUIT:
-                    SDL_Quit();
-                    return 0;
-            } 
+        int i = 0;
+
+        prepare(renderer);
+
+        for (Rectangle rect : rectangles) {
+            rectangles[i].Hover();
+            draw(renderer, rectangles[i].getRect());
+            ++i;
         }
+
+        while(SDL_PollEvent(&event)) { 
+            if (event.type == SDL_QUIT) { SDL_Quit(); return 0; }
+            if (event.key.keysym.sym == SDLK_q) { SDL_Quit(); return 0; }
+            if (event.key.keysym.sym == SDLK_SPACE) { addRectangle(rectangles); }
+        
+        } 
     }
-
-
-
-
 }
+
+
+
